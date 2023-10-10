@@ -15,4 +15,5 @@ The study consist of 3 parts:
    Then, to obtain electron temperatures you can use plot_Te.py script.
 
 4. Raw data are in "raw" directory.
-   You can make VSWR(frequency) plots and calculate electron density on power dependence using calcNe_2.py  
+   You can make VSWR(frequency) plots and calculate electron density on power dependence using calcNe_2.py;
+   Numerical simulation data (x_comsol and y_comsol) are taken from mph model.
