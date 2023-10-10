@@ -19,8 +19,23 @@ def calcNe(length, f):
 	print(epsilon, "epsilon", length, "length", f, "f")
 	return eps0_const*me_const/e_const**2*(1-epsilon)*(6.28*f)**2
 
+def plotter(r_list, Func_list, xLabel, yLabel, name, Label=[""], ylog=False):
+	plt.rcParams.update({'font.size': 14})
+	for i in range(len(Func_list)):
+		plt.plot(r_list, Func_list[i], label=Label[i])
+	# plt.scatter(r_list[i], Func_list[i], label=Label[i], marker=pointstyle[i])
+	if Label[0]!="": plt.legend(loc="best")
+	plt.grid()
+	if ylog: plt.yscale("log") 
+	plt.ylabel(yLabel)
+	plt.xlabel(xLabel)
+	plt.tight_layout()
+	plt.savefig("plots/"+name[:-4]+'.svg')
+	# plt.show()
+	plt.close()
+
 def processing(name, length):
-	Freq, Rs, Xs = read_data(name)
+	Freq, Rs, Xs = read_data("raw/"+name)
 	Zs = 50 #Ohm source impedance
 	VSWR, absXs = [], []
 	for i in range(len(Xs)):
@@ -34,6 +49,7 @@ def processing(name, length):
 
 	minXsIndex = absXs.index(min(absXs))
 	minVSWRIndex = VSWR.index(min(VSWR))
+	plotter(Freq, [VSWR], 'Freq [MHz]',"VSWR", "VSWR"+name, ylog=True)
 	return calcNe(length, Freq[minVSWRIndex]*1e6)
 
 
@@ -73,7 +89,7 @@ me_const = 3.1e-31
 Ne = []
 
 for i in range(len(names)):
-	Ne.append(processing("raw/"+names[i], 0.34))
+	Ne.append(processing(names[i], 0.34))
 
 print("Ne[1/m^3]\t Power[W]")
 for i in range(len(Ne)):
